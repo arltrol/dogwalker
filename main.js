@@ -1,5 +1,3 @@
-<canvas id="gameCanvas"></canvas>
-<script>
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -8,11 +6,9 @@ let H = window.innerHeight;
 canvas.width = W;
 canvas.height = H;
 
-// Load the sprite sheet
 const sprite = new Image();
 sprite.src = 'sprite_sheet_2x4_384x192.png';
 
-// Sprite layout: 2x4 grid, each cell 384×192
 const SPRITES = {
   background: [0, 0, 384, 192],
   walker:     [384, 0, 384, 192],
@@ -23,10 +19,9 @@ const SPRITES = {
   paw:        [0, 576, 384, 192]
 };
 
-// Scaling constants
 const SCALE = 0.25;
-const SPRITE_W = 384 * SCALE; // = 96
-const SPRITE_H = 192 * SCALE; // = 48
+const SPRITE_W = 384 * SCALE;
+const SPRITE_H = 192 * SCALE;
 
 let playerY = H / 2;
 let score = 0;
@@ -65,8 +60,6 @@ function spawnObstacle() {
 function gameLoop() {
   ctx.clearRect(0, 0, W, H);
   drawSprite(SPRITES.background, 0, 0, W, H);
-
-  // Clamp and draw player
   playerY = Math.max(0, Math.min(H - SPRITE_H, playerY));
   drawSprite(SPRITES.walker, 100, playerY, SPRITE_W, SPRITE_H);
 
@@ -121,4 +114,3 @@ setInterval(spawnBone, 2000);
 setInterval(spawnObstacle, 3000);
 
 sprite.onload = () => gameLoop();
-</script>
