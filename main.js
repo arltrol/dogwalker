@@ -10,7 +10,7 @@ canvas.height = H;
 const sprite = new Image();
 sprite.src = 'dog_walker_game_assets.png';
 
-// Fixed sprite layout: 2 columns × 4 rows, each 384×384
+// Sprite layout: 2 columns × 4 rows, each 512×256 (total: 1024×1024)
 const SPRITES = {
   background: [0, 0, 512, 256],
   walker:     [512, 0, 512, 256],
