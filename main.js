@@ -1,3 +1,5 @@
+<canvas id="gameCanvas"></canvas>
+<script>
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -10,7 +12,7 @@ canvas.height = H;
 const sprite = new Image();
 sprite.src = 'sprite_sheet_2x4_384x192.png';
 
-// Sprite layout: 2 columns × 4 rows, each 512×256
+// Sprite layout: 2x4 grid, each cell 384×192
 const SPRITES = {
   background: [0, 0, 384, 192],
   walker:     [384, 0, 384, 192],
@@ -21,6 +23,10 @@ const SPRITES = {
   paw:        [0, 576, 384, 192]
 };
 
+// Scaling constants
+const SCALE = 0.25;
+const SPRITE_W = 384 * SCALE; // = 96
+const SPRITE_H = 192 * SCALE; // = 48
 
 let playerY = H / 2;
 let score = 0;
@@ -44,14 +50,14 @@ function drawSprite([sx, sy, sw, sh], dx, dy, dw, dh) {
 }
 
 function spawnBone() {
-  bones.push({ x: W + 50, y: Math.random() * (H - 60) });
+  bones.push({ x: W + 50, y: Math.random() * (H - SPRITE_H) });
 }
 
 function spawnObstacle() {
   const isCyclist = Math.random() > 0.5;
   obstacles.push({
     x: W + 50,
-    y: Math.random() * (H - 60),
+    y: Math.random() * (H - SPRITE_H),
     type: isCyclist ? 'cyclist' : 'puddle'
   });
 }
@@ -60,14 +66,15 @@ function gameLoop() {
   ctx.clearRect(0, 0, W, H);
   drawSprite(SPRITES.background, 0, 0, W, H);
 
-  playerY = Math.max(0, Math.min(H - 64, playerY));
-  drawSprite(SPRITES.walker, 100, playerY, 64, 64);
+  // Clamp and draw player
+  playerY = Math.max(0, Math.min(H - SPRITE_H, playerY));
+  drawSprite(SPRITES.walker, 100, playerY, SPRITE_W, SPRITE_H);
 
   bones.forEach((b, i) => {
     b.x -= gameSpeed;
-    drawSprite(SPRITES.bone, b.x, b.y, 40, 40);
+    drawSprite(SPRITES.bone, b.x, b.y, SPRITE_W * 0.8, SPRITE_H * 0.8);
     if (b.x < -50) bones.splice(i, 1);
-    else if (Math.abs(b.x - 100) < 40 && Math.abs(b.y - playerY) < 40) {
+    else if (Math.abs(b.x - 100) < SPRITE_W && Math.abs(b.y - playerY) < SPRITE_H) {
       score++;
       beep();
       bones.splice(i, 1);
@@ -77,9 +84,9 @@ function gameLoop() {
   obstacles.forEach((o, i) => {
     o.x -= gameSpeed;
     const spriteRef = o.type === 'cyclist' ? SPRITES.cyclist : SPRITES.puddle;
-    drawSprite(spriteRef, o.x, o.y, 50, 50);
+    drawSprite(spriteRef, o.x, o.y, SPRITE_W, SPRITE_H);
     if (o.x < -50) obstacles.splice(i, 1);
-    else if (Math.abs(o.x - 100) < 40 && Math.abs(o.y - playerY) < 40) {
+    else if (Math.abs(o.x - 100) < SPRITE_W && Math.abs(o.y - playerY) < SPRITE_H) {
       lives--;
       beep();
       obstacles.splice(i, 1);
@@ -107,10 +114,11 @@ window.addEventListener('keydown', (e) => {
 
 canvas.addEventListener('touchstart', (e) => {
   const touchY = e.touches[0].clientY;
-  playerY = touchY - 32;
+  playerY = touchY - SPRITE_H / 2;
 });
 
 setInterval(spawnBone, 2000);
 setInterval(spawnObstacle, 3000);
 
 sprite.onload = () => gameLoop();
+</script>
