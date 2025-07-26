@@ -12,14 +12,16 @@ sprite.src = 'dog_walker_game_assets.png';
 
 // Fixed sprite layout: 2 columns × 4 rows, each 384×384
 const SPRITES = {
-  background: [0, 0, 384, 384],
-  walker:     [384, 0, 384, 384],
-  cyclist:    [0, 384, 384, 384],
-  puddle:     [384, 384, 384, 384],
-  bone:       [0, 768, 384, 384],
-  heart:      [384, 768, 384, 384],
-  paw:        [0, 1152, 384, 384]
+  background: [0, 0, 512, 256],
+  walker:     [512, 0, 512, 256],
+  cyclist:    [0, 256, 512, 256],
+  puddle:     [512, 256, 512, 256],
+  bone:       [0, 512, 512, 256],
+  heart:      [512, 512, 512, 256],
+  paw:        [0, 768, 512, 256]
 };
+
+
 
 let playerY = H / 2;
 let score = 0;
@@ -64,12 +66,12 @@ function gameLoop() {
   playerY = Math.max(0, Math.min(H - 64, playerY));
 
   // Draw player (walker)
-  drawSprite(SPRITES.walker, 100, playerY, 64, 64);
+ drawSprite(SPRITES.walker, 100, playerY, 64, 64);
 
   // Draw bones
   bones.forEach((b, i) => {
     b.x -= gameSpeed;
-    drawSprite(SPRITES.bone, b.x, b.y, 40, 40);
+   drawSprite(SPRITES.bone, b.x, b.y, 40, 40); 
     if (b.x < -50) bones.splice(i, 1);
     else if (Math.abs(b.x - 100) < 40 && Math.abs(b.y - playerY) < 40) {
       score++;
