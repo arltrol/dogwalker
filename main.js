@@ -8,18 +8,19 @@ canvas.height = H;
 
 // Load the sprite sheet
 const sprite = new Image();
-sprite.src = 'sprite_sheet_2x4_512x256.png';
+sprite.src = 'sprite_sheet_2x4_384x192.png';
 
 // Sprite layout: 2 columns × 4 rows, each 512×256
 const SPRITES = {
-  background: [0, 0, 512, 256],
-  walker:     [512, 0, 512, 256],
-  cyclist:    [0, 256, 512, 256],
-  puddle:     [512, 256, 512, 256],
-  bone:       [0, 512, 512, 256],
-  heart:      [512, 512, 512, 256],
-  paw:        [0, 768, 512, 256]
+  background: [0, 0, 384, 192],
+  walker:     [384, 0, 384, 192],
+  cyclist:    [0, 192, 384, 192],
+  puddle:     [384, 192, 384, 192],
+  bone:       [0, 384, 384, 192],
+  heart:      [384, 384, 384, 192],
+  paw:        [0, 576, 384, 192]
 };
+
 
 let playerY = H / 2;
 let score = 0;
